@@ -19,3 +19,12 @@ function renderTemplate($name, $data = [])
 
     return $result; //Возвращаем результат
 }
+
+/*
+*Функция для вывода массива для проверки.
+*/
+function pr($arr){
+     echo '<pre>';
+     print_r(arr);
+     echo '</pre>';
+}
