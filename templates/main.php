@@ -12,10 +12,8 @@
     <?endforeach;?>    
 
 <?else:?>
-  <p class="pages">
-  <small>Новостей пока нет</small> 
-  <span>1</span> 
-  <a href="#">2</a> 
-  <a href="#">&raquo;</a></p>        
-       
-<?endif?>     
+<?=$navigation;?>
+
+<?else:?>
+    <p>Новостей пока нет</p>
+<?endif;?>
