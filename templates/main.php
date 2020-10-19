@@ -11,7 +11,7 @@
         </div>
     <?endforeach;?>    
 
-<?else:?>
+
 <?=$navigation;?>
 
 <?else:?>
