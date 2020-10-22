@@ -28,7 +28,7 @@ $offset = $page * $num - $num; // С какой новости начинать.
  */
 $where = '';
 if(isset($_GET['category'])){
-    $categoty = intval($_GET['category']);
+    $category = intval($_GET['category']);
     if($category > 0){
         $where = 'WHERE `category_id` = ' . $category;
     }
