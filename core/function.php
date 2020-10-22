@@ -25,6 +25,25 @@ function renderTemplate($name, $data = [])
 */
 function pr($arr){
      echo '<pre>';
-     print_r(arr);
+     print_r($arr);
      echo '</pre>';
+}
+
+/**
+ * Функция добавления параметра в адресную строку
+ */
+function setPageParam($param, $value)
+{
+    $qParam = $_SERVER ['QUERY_STRING']; //Получаем строку с параметрами
+    parse_str($qParam, $arr); // Генерируем массив из этой строки
+    if(is_array($param) && !empty($value)){ //если передан параметр
+        if(array_key_exists($param, $arr)){ //если есть такой ключ в массиве
+        $arr[$param] = $value; //поменяли значение в полученном масиве
+        }else{
+            $arr[$param] = $value;
+        }
+    }
+    return http_build_query($arr);
+
+
 }

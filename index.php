@@ -23,29 +23,54 @@ if($page <= 0){
 }
 
 $offset = $page * $num - $num; // С какой новости начинать.
-
+/**
+ * Фильтрация по категориям
+ */
+$where = '';
+if(isset($_GET['category'])){
+    $categoty = intval($_GET['category']);
+    if($category > 0){
+        $where = 'WHERE `category_id` = ' . $category;
+    }
+    pr($_GET);
+}
 
 $res = mysqli_query($link, "SELECT n.`id`, n.`title`, n.`preview_text`, n.`date`, n.`image`, n.`comments_cnt`, c.`title` AS news_cat".
-    " FROM `news` n JOIN `category` c ON c.`id` = n.`category_id` ORDER BY n.`id` LIMIT $offset, $num");
+    " FROM `news` n JOIN `category` c ON c.`id` = n.`category_id` $where ORDER BY n.`id` LIMIT $offset, $num");
 
 
 $arNews = mysqli_fetch_all($res, MYSQLI_ASSOC);
 
 $arPage = range(1, StotalStr); // массив со страницами [1,2,3,4.....]
 
-$arPage = renderTemplate( 'navigation',[
-                                'arPage' => $arPage,
-                                'totalPage' => $totalStr,
-                                'curPage' => $page //Передаем текущую страницу
-]);
+$prevPage = '';
+if ($page >1){
+    $prevPage = $page - 1;
+}
+
+$nextPage = '';
+if($page < $totalStr){
+    $nextPage = $page + 1;
+}
+
+$is_nav = ($totalStr > 1) ? true : false;
+
 
 
 //////////////////////////////////////////////////////////////////////////
-$pageNavigation = renderTemplate('navigation', ['arPage =>$arPage']); // Получаем HTML шаблона навигации. Передаём массив со страни
+$pageNavigation = renderTemplate('navigation', [//Передаем текущую страницу
+                                                       // 'arPage =>$arPage' // Передает
+                                                         'totalPage' => $totalStr, //
+                                                         'curPage' => $page, //
+                                                         'nextPage' => $nextPage, //
+                                                         'prevPage' => $prevPage, //
+                                                         'show' => $is_nav //
+]); // Получаем HTML шаблона навигации. Передаём массив со страни
 
 $page_content = renderTemplate("main", [ // Получаем HTML главного блока шаблона main (изменяемого блока с новостями)
                                 'arNews' =>$arNews, // Передаём массив с новостями
                                 'navigation' => $pageNavigation // Передаём полученный HTML код навигации
+
 ]);
 
 $result = renderTemplate('layout', // главный шаблон страницы
